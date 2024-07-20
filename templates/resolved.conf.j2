@@ -2,5 +2,5 @@
 
 [Resolve]
 {% for setting in settings %}
-  {{ setting.key }}: "{{ setting.value }}"
+{{ setting.key }}={{ setting.value }}
 {% endfor %}
