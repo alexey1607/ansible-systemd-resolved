@@ -1,0 +1,31 @@
+---
+- name: Install libnss-resolve
+  ansible.builtin.apt:
+    name: libnss-resolve
+    state: present
+  tags: [install]
+
+- name: Set systemd-resolved managed resolv.conf
+  ansible.builtin.file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+  tags: [configure]
+
+- name: Configure systemd-resolved
+  ansible.builtin.template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart systemd-resolved
+  tags: [configure]
+
+- name: Start systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: started
+    enabled: true
+  tags: [configure]

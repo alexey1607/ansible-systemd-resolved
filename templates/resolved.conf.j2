@@ -1,0 +1,6 @@
+{{ ansible_managed | comment }}
+
+[Resolve]
+{% for setting in settings %}
+  {{ setting.key }}: "{{ setting.value }}"
+{% endfor %}
